@@ -96,13 +96,13 @@ class Game:
 
     def _get_alive_cells_indices(self):
         """
-        Return indices of Live cells in current generation
+        Return indices of alive cells in current generation
         """
         live_cells_indices = []
         for y in range(self._height):
             for x in range(self._width):
                 if self._board.get_cell_state(y, x):
-                    live_cells_indices.append((x, y))
+                    live_cells_indices.append((y, x))
         return live_cells_indices
 
     def _get_alive_count(self, loc_indices):
@@ -142,6 +142,5 @@ class Game:
 
 
 if __name__ == "__main__":
-
-    game = Game(20, 40)
+    game = Game(80, 80)
     game.play()
