@@ -25,5 +25,5 @@ about the gameplay mechanics itself.)
 ## Notes
 
 Please, do let me know if you have any feedback on how to do this in a more
-Pythonic or elegant way -- I know the mechanism behind OOP, but I could use reps
-in thinking through design and interface!
+Pythonic or elegant way -- I know the mechanisms undergirding OOP in Python, but I could 
+use reps in thinking through design and interface!
