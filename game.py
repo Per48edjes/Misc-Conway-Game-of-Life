@@ -60,9 +60,9 @@ class Game:
         Main method called on Game object to play game for n generations
         """
         for _ in range(n):
+            os.system("clear")
             self._display_board()
             sleep(0.5)
-            os.system("clear")
             self._next_generation()
 
     def _display_board(self):
@@ -127,7 +127,7 @@ class Game:
         ):
             return self._board.get_cell_state(y, x)
         else:
-            return self._board.get_cell(y, x).switch_state()
+            return not self._board.get_cell_state(y, x)
 
     def _next_generation(self):
         """
@@ -143,5 +143,5 @@ class Game:
 
 if __name__ == "__main__":
 
-    game = Game(4, 4)
-    game.play(n=1)
+    game = Game(20, 40)
+    game.play()
