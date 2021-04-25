@@ -7,6 +7,7 @@ from time import sleep
 class Cell:
     def __init__(self, state):
         self._state = state
+        self._future_state = state
 
     @property
     def state(self):
@@ -18,6 +19,12 @@ class Cell:
 
     def switch_state(self):
         self._state = not self._state
+    
+    def update_future_state(self, new_state):
+        self._future_state = new_state
+    
+    def next_gen(self):
+        self._state = self._future_state
 
     def __str__(self):
         if self._state:
@@ -63,7 +70,8 @@ class Game:
             os.system("clear")
             self._display_board()
             sleep(0.5)
-            self._next_generation()
+            self._update_future_states()
+            self._update_next_generation()
 
     def _display_board(self):
         print(self._board)
@@ -73,11 +81,12 @@ class Game:
         Instantiate 0th generation of game with live cells based on pct_alive
         """
         num_initial_live_cells = round(self._height * self._width * pct_alive)
-        for _ in range(num_initial_live_cells):
+        while num_initial_live_cells > 0:
             x = randint(0, self._width - 1)
             y = randint(0, self._height - 1)
-            self._board.get_cell(y, x).switch_state()
-
+            if not self._board.get_cell(y, x).state:
+                self._board.get_cell(y, x).switch_state()
+                num_initial_live_cells += -1
     def _get_neighbors_indices(self, y, x):
         """
         Return indices of neighbors of element located at y, x
@@ -129,17 +138,19 @@ class Game:
         else:
             return not self._board.get_cell_state(y, x)
 
-    def _next_generation(self):
+    def _update_future_states(self):
+        for y in range(self._height):
+            for x in range(self._width):
+                new_state = self._get_cell_next_state(y,x)
+                self._board.get_cell(y, x).update_future_state(new_state)
+
+    def _update_next_generation(self):
         """
         Update cells accordingly to replace board with new_board
         """
-        new_board = Board(self._height, self._width)
         for y in range(self._height):
             for x in range(self._width):
-                new_state = self._get_cell_next_state(y, x)
-                new_board.set_cell_state(y, x, new_state)
-        self._board = new_board
-
+                self._board.get_cell(y,x).next_gen()
 
 if __name__ == "__main__":
     game = Game(80, 80)
